@@ -1,0 +1,727 @@
+{
+	"info": {
+		"_postman_id": "12041c58-a2e6-4a58-88ac-c31f8e81e793",
+		"name": "ass10",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21953247"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"thana.najem3@gmail.com\",\r\n    \"password\":\"T123t123@\",\r\n    \"name\":\"thanaBallout\",\r\n    \"cPassword\":\"T123t123@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/signup",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"if (jsonData.accessToken) {\r",
+									"    pm.collectionVariables.set(\"accesToken\", jsonData.accessToken);\r",
+									"}\r",
+									"\r",
+									"\r",
+									" "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"thana.najem3@gmail.com\",\r\n    \"password\":\"T123t123@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/signin",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "updateProfile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_{{accesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"gender\":\"female\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/user/updateProfile/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"updateProfile",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "softDelete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzBlODUzYTg1MjM1M2YwNjBkNjBjNCIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODM0NTU5MCwiZXhwIjoxNjY4MzQ5MTkwfQ.MhIQ7vbAiaWGJqE-Ug_oXQm32N5FU4smSD_TzsNveh0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/user/softDelete/6370e853a852353f060d60c4",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"softDelete",
+								"6370e853a852353f060d60c4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profilePic",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzI0NGMyNmM0ODJlNjk0ZjJlNTE0ZSIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODQzMzExOCwiZXhwIjoxNjY4NDM2NzE4fQ.LEKTccKmFR2LG0Dt0NuaUOLwjzypxD0P4pC0_D0PoF4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Technipal/Desktop/test.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/user/profile/pic",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"profile",
+								"pic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cover pic",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzI0NGMyNmM0ODJlNjk0ZjJlNTE0ZSIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODQzMzExOCwiZXhwIjoxNjY4NDM2NzE4fQ.LEKTccKmFR2LG0Dt0NuaUOLwjzypxD0P4pC0_D0PoF4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Technipal/Desktop/test.png"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Technipal/Desktop/test.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/user/cover/pics",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"cover",
+								"pics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user posts comments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_{{accesToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/user/usersPosts/page/1/size/5",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"usersPosts",
+								"page",
+								"1",
+								"size",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get posts of specific user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/user/posts/user/637284948c0e10d188e424b4/page/1/size/3",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"posts",
+								"user",
+								"637284948c0e10d188e424b4",
+								"page",
+								"1",
+								"size",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "block user",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzI4NDk0OGMwZTEwZDE4OGU0MjRiNCIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODUxNTkyNywiZXhwIjoxNjY4NTE5NTI3fQ.cxt2v6Mk_mY4EuOZWairdtYlSawSN67cw_c1gYzAg5M",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/user/block/6372d0124e0271197f910288",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"block",
+								"6372d0124e0271197f910288"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "post",
+			"item": [
+				{
+					"name": "addPost",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_{{accesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "postBody",
+									"value": "post2",
+									"type": "text"
+								},
+								{
+									"key": "postPicture",
+									"type": "file",
+									"src": "/C:/Users/Technipal/Desktop/test.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/post/posts/pic",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"posts",
+								"pic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCommentToPost",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_{{accesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"commentBody\":\"comment#5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/post/addComment/637568e244d5abc006e12131",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"addComment",
+								"637568e244d5abc006e12131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCommentToComment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_{{accesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"commentBody\":\"comment#5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/post/addComment/637568e244d5abc006e12131/6375693f44d5abc006e12155",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"addComment",
+								"637568e244d5abc006e12131",
+								"6375693f44d5abc006e12155"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit comment",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzI4NDk0OGMwZTEwZDE4OGU0MjRiNCIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODQ2NzYzMiwiZXhwIjoxNjcxMDU5NjMyfQ.Fej96B5HzI24CYuT0Yc3s64m9WKH2Jjayvek5d_D3bE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"commentBody\":\"post#4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/post/comment/6372daf59c252edb49367cb5",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"comment",
+								"6372daf59c252edb49367cb5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteComment",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzI4NTY2OWFlYzNiMTkxMDc1ODcyZiIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODQ3Mzk3MiwiZXhwIjoxNjY4NDc3NTcyfQ.yU6TReE8NjNWfEVvZlmItM07r4iKUiqjZ3dUymN5Efg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/post/softDelComment/6372e43545aebc721ad908a4/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"softDelComment",
+								"6372e43545aebc721ad908a4",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit post",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzI4NDk0OGMwZTEwZDE4OGU0MjRiNCIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODUxNzQ2MCwiZXhwIjoxNjY4NTIxMDYwfQ.3X9V1pK5nz0iD3M9m6zPbDG1gFVV8iRe0YadXQkdwLc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"postBody\":\"post#3456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/post/post/63738d7eaf2119f41f960e32",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"post",
+								"63738d7eaf2119f41f960e32"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletepost",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzI4NDk0OGMwZTEwZDE4OGU0MjRiNCIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODUxNTkyNywiZXhwIjoxNjY4NTE5NTI3fQ.cxt2v6Mk_mY4EuOZWairdtYlSawSN67cw_c1gYzAg5M",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/post/postDel/63738d7eaf2119f41f960e35",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"postDel",
+								"63738d7eaf2119f41f960e35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "like post",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzI4NTY2OWFlYzNiMTkxMDc1ODcyZiIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODUxODg5NywiZXhwIjoxNjY4NTIyNDk3fQ.xn9U1a9ICQj6ijvJeKlny1U1KET_EuJUWzRRpf6fGv0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/post/like/6373937185b2adf07a78ba23",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"like",
+								"6373937185b2adf07a78ba23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "like post Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzI4NTY2OWFlYzNiMTkxMDc1ODcyZiIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODUxODg5NywiZXhwIjoxNjY4NTIyNDk3fQ.xn9U1a9ICQj6ijvJeKlny1U1KET_EuJUWzRRpf6fGv0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/post/comment/likes/6373937185b2adf07a78ba23",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"comment",
+								"likes",
+								"6373937185b2adf07a78ba23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "un like post",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Thana123_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzI4NTY2OWFlYzNiMTkxMDc1ODcyZiIsImlzTG9nZ2VkSW4iOnRydWUsImlhdCI6MTY2ODUxODg5NywiZXhwIjoxNjY4NTIyNDk3fQ.xn9U1a9ICQj6ijvJeKlny1U1KET_EuJUWzRRpf6fGv0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/post/unLike/6373937185b2adf07a78b1a4",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"unLike",
+								"6373937185b2adf07a78b1a4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post of fixed user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/post/posts/637284948c0e10d188e424b4/page/0/size/3",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"posts",
+								"637284948c0e10d188e424b4",
+								"page",
+								"0",
+								"size",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "posts of users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/post/posts/page/1/size/4",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"posts",
+								"page",
+								"1",
+								"size",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get fixed comment info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/post/comment/6373c554c28489b0782a4441/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"post",
+								"comment",
+								"6373c554c28489b0782a4441",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "accesToken",
+			"value": ""
+		}
+	]
+}
