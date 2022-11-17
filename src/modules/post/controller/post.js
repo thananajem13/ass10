@@ -1,3 +1,4 @@
+import { commentModel } from "../../../../DB/models/comment.model.js";
 import { postModel } from "../../../../DB/models/post.model.js"
 import { userModel } from "../../../../DB/models/user.model.js";
 import cloudinary from "../../../services/cloudinary.js";
@@ -84,7 +85,8 @@ export const deletePost = async (req,res)=>{
     if(!post){
         return res.status(400).json({message:"invalid post id or you aren't owner's of post or post deleted, so you cn't delete this post"})
     }
-    return res.status(200).json({message:"Done",post})
+    const softDeletePostComment = await commentModel.updateMany({postId:id,isDeleted:false},{isDeleted:true},{new:true})
+    return res.status(200).json({message:"Done",post,softDeletePostComment})
     } catch (error) {
     return res.status(500).json({ message: "error", error })
         

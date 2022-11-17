@@ -43,7 +43,7 @@ export const createComment = async (req, res) => {
       const checkIfCommentReplyToExist = await commentModel.findOne({
         isDeleted: false,
         _id: req.params.commentReplyTo,
-      });
+      }); 
       if (!checkIfCommentReplyToExist) {
         return res
           .status(400)
@@ -54,6 +54,7 @@ export const createComment = async (req, res) => {
         { commentReplyTo: mongoose.Types.ObjectId(req.params.commentReplyTo) },
         { new: true }
       );
+      console.log({addCommentReplyTo});
       if (!addCommentReplyTo) {
         return res.status(400).json({
           message:
@@ -94,45 +95,67 @@ export const editComment = async (req, res) => {
 export const softDeleteComment = async (req, res) => {
   try {
     const { commentID } = req.params;
-    const { _id, role } = req.user;
+    const { _id } = req.user;
     const commentFind = await commentModel.findOne({
       _id: commentID,
       isDeleted: false,
+      CreatedBy:_id
     });
+    const postowner = await postModel.findOne({_id:commentFind.postId,isDeleted: false,})//or populate
+const replies = await commentModel.find({commentReplyTo:commentID, isDeleted: false })
+    
+if(!postowner || !commentFind ){
+      return res.status(400).json({ message: "post may be deleted, so you can't delete any comment. it's deleted... or comment deleted previously, so it isn't exist" });
 
-    if (role == "admin") {
-      const comment = await commentModel.findOneAndUpdate(
-        { _id: commentID, isDeleted: false },
-        { isDeleted: true, deletedBy: _id }
-      );
-      console.log({ comment });
-      if (comment) {
-        return res.status(200).json({ message: "Done", comment });
-      } else {
-        return res
-          .status(400)
-          .json({ message: "invalid comment id or deleted comment" });
-      }
-    }
-
-    const commentOwner = await commentModel.findOneAndUpdate(
-      { _id: commentID, CreatedBy: _id, isDeleted: false },
+    } 
+    //delete all child comment
+    recursivePopulateReplies(commentFind)
+    const deleteMainComment  = await commentModel.findOneAndUpdate(
+      {_id:commentID, isDeleted: false },
       { isDeleted: true, deletedBy: _id },
-      { new: true }
-    );
-    if (commentOwner) {
-      return res.status(200).json({ message: "Done", commentOwner });
-    } else {
-      return res
-        .status(200)
-        .json({ message: "invalid comment id or deleted comment", commentOwner });
-    }
+      { new: true })
+     
+      if ( deleteMainComment) {
 
-  } catch (error) {
+        return res.status(200).json({ message: "Done",  deleteMainComment  });
+      }else{
+        return res.status(400).json({ message: "failed",  deleteMainComment  });
+
+      }  
+    
+  } 
+     catch (error) {
     return res.status(500).json({ message: "error", error })
 
   }
 
+};
+const recursivePopulateReplies = async (
+  comment,
+  parents = new Set(),
+  maxDepth = 3
+) => {
+  if (parents.has(comment._id)) return;
+  parents.add(comment._id);
+
+  comment.replies = await commentModel
+      .find({  commentReplyTo: comment._id })
+      .lean(); 
+     
+      
+
+  if (comment.replies.length === 0)  
+    return;
+  
+ 
+  return await Promise.all(
+      comment.replies.map(async (c) => {
+        await commentModel.findByIdAndUpdate({_id:c._id},{isDeleted:true})
+        recursivePopulateReplies(c, parents, maxDepth - 1)
+      }  
+      )
+      
+  );
 };
 export const likeComment = async (req, res) => {
   try {

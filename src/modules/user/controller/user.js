@@ -111,17 +111,30 @@ export const softDelete = async (req, res) => {
             return res.status(409).json({ message: "website will be with no admins so set any user to be admin" })
         }
 
-        const user = await userModel.findOne({ $or: [{ $and: [{ _id: loginUser._id }, { _id: id }] }, { $and: [{ _id: id }, { role: "admin" }] }] })
-        if (!user) {
-            return res.status(400).json({ message: "invalid id or un-authorized user" })
-        } else {
-            const updatedUser = await userModel.findByIdAndUpdate(id, { isDeleted: true, deletedBy: loginUser._id }, { new: true })
-            if (!updatedUser) {
-                return res.status(400).json({ message: "fail to soft delete account" })
-            } else {
-                res.status(200).json({ message: "soft deleted done", updatedUser })
+const checkUserLogin = await userModel.findOne({ _id: loginUser._id })//deleted by user himself
+const checkLoggedUserIsAdmin = loginUser.role=="admin" 
+ 
+if(checkUserLogin || checkLoggedUserIsAdmin){
+    const updatedUser = await userModel.findByIdAndUpdate(id, { isDeleted: true, deletedBy: loginUser._id }, { new: true })
+    if (!updatedUser) {
+        return res.status(400).json({ message: "fail to soft delete account" })
+    } else {  
+        if(checkLoggedUserIsAdmin && loginUser._id != id){
+            const posts = await postModel.find({isDeleted:false,CreatedBy:id},{isDeleted:true},{new:true})
+              const softDeletePost = await postModel.updateMany({isDeleted:false,CreatedBy:id},{isDeleted:true},{new:true})
+console.log({posts});
+            for (const post of posts) {
+                
+                  const softDeleteComment = await commentModel.updateMany({isDeleted:false,postId:post._id},{isDeleted:true},{new:true})
             }
+        
+           
         }
+       return res.status(200).json({ message: "soft deleted done", updatedUser })
+    }
+}
+
+        
     } catch (error) {
         return res.status(500).json({ message: "error", error })
 
@@ -270,3 +283,4 @@ export const getFixedPostOfUser = async (req, res) => {
 
 
 }
+
