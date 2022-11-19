@@ -213,19 +213,21 @@ export const addCoverPics = async (req, res) => {
 
 
 }
+ 
 const recursivePopulateReplies = async (
     comment,
-    parents = new Set(),
-    maxDepth = 3
+    parents = new Set() 
 ) => {
-    if (parents.has(comment._id)) return;
     parents.add(comment._id);
     comment.replies = await commentModel
         .find({ isDeleted: false, commentReplyTo: comment._id })
         .lean();
+
     if (comment.replies.length === 0) return;
     return await Promise.all(
-        comment.replies.map((c) => recursivePopulateReplies(c, parents, maxDepth - 1))
+        comment.replies.map((c) => { 
+            recursivePopulateReplies(c, parents )
+        })
     );
 };
 export const getUsersAndPostsAndComments = async (req, res) => {
@@ -244,7 +246,7 @@ export const getUsersAndPostsAndComments = async (req, res) => {
         }]).skip(skip).limit(limit).lean()
         for (const user of userPostsComments) {
             for (const post of user.postsID) {
-                post.postComment = await postModel.findById({ _id: post._id }).populate('comments').lean();
+                post.postComment = await postModel.findOne({ _id: post._id,isDeleted:false,commentReplyTo:null }).populate('comments').lean();
                 if (post.postComment) {
                     await Promise.all(
                         post.postComment.comments.map((c) => recursivePopulateReplies(c))
@@ -253,6 +255,21 @@ export const getUsersAndPostsAndComments = async (req, res) => {
             }
         }
         res.json({ userPostsComments })
+        // const userPostsComments = await userModel.find({ isDeleted: false, isBlocked: false, confirmEmail: true }).populate([{
+        //     path: "postsID",
+        //     $match: { isDeleted: false }
+        // }]).skip(skip).limit(limit).lean()
+        // for (const user of userPostsComments) {
+        //     for (const post of user.postsID) {
+        //         post.postComment = await postModel.findById({ _id: post._id }).populate('comments').lean();
+        //         if (post.postComment) {
+        //             await Promise.all(
+        //                 post.postComment.comments.map((c) => recursivePopulateReplies(c))
+        //             );
+        //         }
+        //     }
+        // }
+        // res.json({ userPostsComments })
     } catch (error) {
         return res.status(500).json({ message: "error", error })
 
